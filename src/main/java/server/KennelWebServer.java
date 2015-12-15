@@ -38,7 +38,7 @@ public class KennelWebServer {
 
 			ServletHolder holderDefault = new ServletHolder("default", DefaultServlet.class);
 			ServletHolder indexDefault = new ServletHolder("index", IndexServlet.class);
-			ServletHolder counterDefault = new ServletHolder("index", CounterJspServlet.class);
+			ServletHolder counterDefault = new ServletHolder("counter", CounterJspServlet.class);
 
 			context.addServlet(holderDefault, "/");
 			context.addServlet(indexDefault, "/index");

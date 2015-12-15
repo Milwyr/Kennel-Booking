@@ -20,12 +20,14 @@ public class IndexServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().print("<html><body><h3>doGet method!!!!!</h3></body></html>");
+		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//String uname = request.getParameter("username");
 		response.getWriter().print("<html><body>IndexServlet.doPost works!</body></html>");
+		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 	
 //	private String includeHTMLbody() {

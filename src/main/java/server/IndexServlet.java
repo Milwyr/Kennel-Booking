@@ -1,10 +1,12 @@
 package server;
 
 import java.io.IOException;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import uk.ac.ncl.csc3422.kennelbooking.DogSize;
 import uk.ac.ncl.csc3422.kennelbooking.Kennel;
 import uk.ac.ncl.csc3422.kennelbooking.KennelFactory;
 import uk.ac.ncl.csc3422.kennelbooking.KennelReport;
@@ -15,8 +17,8 @@ import uk.ac.ncl.csc3422.kennelbooking.KennelReport;
  */
 public class IndexServlet extends HttpServlet {
 
-	private Kennel kennel = KennelFactory.initialiseKennel();
-	
+	private final Kennel kennel = KennelFactory.initialiseKennel();
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -25,25 +27,43 @@ public class IndexServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("username", request.getParameter("username"));
-		
-		String[] reportLines = getLines(KennelReport.generateReport(kennel));
-		for (int i = 0; i < reportLines.length; i++) {
-			request.setAttribute("report_line" + (i + 1), reportLines[i]);
+		request.setAttribute("report", KennelReport.generateReport(kennel));
+
+		// When booking button is clicked, book a pen
+		String dogName = request.getParameter("dogname");
+		if (request.getParameter("dogsize") != null && dogName != null) {
+			if (!request.getParameter("dogsize").isEmpty() && !dogName.isEmpty()) {
+				DogSize selectedDogSize = convert(request.getParameter("dogsize"));
+				kennel.bookPen(selectedDogSize, dogName);
+				request.setAttribute("report", KennelReport.generateReport(kennel));
+				request.setAttribute("bookingconfirmation", "A " + request.getParameter("dogsize") + " kennel is booked.");
+			}
 		}
-		
+
+		String checkoutDogName = request.getParameter("checkoutdogname");
+		if (checkoutDogName != null) {
+			if (!checkoutDogName.isEmpty()) {
+				boolean checkedOut = kennel.checkout(checkoutDogName);
+
+				if (checkedOut) {
+					request.setAttribute("checkoutconfirmation", checkoutDogName + " is checked out.");
+				} else {
+					request.setAttribute("checkoutconfirmation", checkoutDogName + " is not checked out.");
+				}
+				request.setAttribute("report", KennelReport.generateReport(kennel));
+			}
+		}
+
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
-	
-	private String[] getLines(String report) {
-		String[] lines = new String[8];
-		lines[0] = report.substring(0, 92);
-		lines[1] = report.substring(93, 140);
-		lines[2] = report.substring(141, 188);
-		lines[3] = report.substring(189, 236);
-		lines[4] = report.substring(237, 285);
-		lines[5] = report.substring(286, 334);
-		lines[6] = report.substring(335, 383);
-		lines[7] = report.substring(384, 431);
-		return lines;
+
+	private DogSize convert(String dogSize) {
+		if (dogSize.equalsIgnoreCase("small")) {
+			return DogSize.SMALL;
+		} else if (dogSize.equalsIgnoreCase("medium")) {
+			return DogSize.MEDIUM;
+		} else {
+			return DogSize.GIANT;
+		}
 	}
 }

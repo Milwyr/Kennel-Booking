@@ -18,7 +18,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  */
 public class KennelWebServer {
 
-	private static final int PORT_NUMBER = 8082;
+	private static final int PORT_NUMBER = 80;
 
 	public static void main(String[] args) {
 		Server server = new Server(PORT_NUMBER);

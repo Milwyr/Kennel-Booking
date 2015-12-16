@@ -18,7 +18,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  */
 public class KennelWebServer {
 
-	private static final int PORT_NUMBER = 8081;
+	private static final int PORT_NUMBER = 80;
 
 	public static void main(String[] args) {
 		Server server = new Server(PORT_NUMBER);
@@ -38,7 +38,7 @@ public class KennelWebServer {
 
 			ServletHolder holderDefault = new ServletHolder("default", DefaultServlet.class);
 			ServletHolder indexDefault = new ServletHolder("index", IndexServlet.class);
-			ServletHolder counterDefault = new ServletHolder("index", CounterJspServlet.class);
+			ServletHolder counterDefault = new ServletHolder("counter", CounterJspServlet.class);
 
 			context.addServlet(holderDefault, "/");
 			context.addServlet(indexDefault, "/index");

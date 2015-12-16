@@ -1,18 +1,35 @@
 <html>
-	<head><title>First JSP</title></head>
+	<head><title>Kennel Booking</title></head>
 	<body>
-		<%
-		  double num = Math.random();
-		  if (num > 0.95) {
-		%>
-		<h2>You'll have a luck day!</h2><p>(<%= num %>)</p>
-		<%
-		  } else {
-		%>
-		<h2>Well, life goes on ... </h2><p>(<%= num %>)</p>
-		<%
-		  }
-		%>
-		<a href="<%= request.getRequestURI() %>"><h3>Try Again</h3></a>
+		<form action="index" method="post">
+			<p>Hello ${username}</p>
+			<p>Current time is <span id="currentTime"></span></p>
+			<div>
+				<b>Vacancies in the kennel</b><br>
+				${report}
+
+			</div>
+			<div>
+				<p><b>Dog size</b></p>
+				<script src="index.js"></script>
+				<select id="dogsize" name="dogsize">
+					<option value="small">Small</option>
+					<option value="medium">Medium</option>
+					<option value="giant">Giant</option>
+				</select>
+			</div>
+			<div>
+				<p><b>Name of your dog</b></p>
+				<input type="text" name="dogname">
+				<p><input type="submit" name="book" value="Book"></p>
+				<font color="green"> ${bookingconfirmation}</font>
+			</div>
+			<div>
+				<p>Name of your dog to check out</p>
+				<input type="text" name="checkoutdogname">
+				<p><input type="submit" name="checkout" value="Check out"></p>
+				<p><font color="blue">${checkoutconfirmation}</font></p>
+			</div>
+		</form>
 	</body>
 </html>

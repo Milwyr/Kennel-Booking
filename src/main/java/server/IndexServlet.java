@@ -80,11 +80,20 @@ public class IndexServlet extends HttpServlet {
 		String report = "Welcome to the Dog guest House kennels! This kennel has 7 pens and a maximium capacity of 12.<br>";
 		for (Pen p : kennel.getPens()) {
 			String indicator = "";
-			if (!p.getDogName().isEmpty()) {
+			if (!p.isVacant()) {
 				indicator = "not ";
 			}
 
-			report += "Pen " + p.getPenNumber() + " is " + indicator + "vacant and has room for " + p.getCapacity() + " x small dog.<br>";
+			String size = "";
+			if (p.getPenNumber() >= 1 && p.getPenNumber() <= 3) {
+				size = "small";
+			} else if (p.getPenNumber() > 3 && p.getPenNumber() <= 6) {
+				size = "medium";
+			} else {
+				size = "giant";
+			}
+			
+			report += "Pen " + p.getPenNumber() + " is " + indicator + "vacant and has room for " + p.getCapacity() + " x " + size + " dog.<br>";
 		}
 		return report;
 	}

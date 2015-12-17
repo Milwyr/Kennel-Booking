@@ -34,8 +34,10 @@ public class IndexServlet extends HttpServlet {
 
 		// When booking button is clicked, book a pen
 		String dogName = request.getParameter("dogname");
-		if (request.getParameter("dogsize") != null && dogName != null) {
-			if (!request.getParameter("dogsize").isEmpty() && !dogName.isEmpty()) {
+
+		// Book a pen if it the book button is clicked
+		if (!isNullOrEmpty(request.getParameter("book"))) {
+			if (!isNullOrEmpty(request.getParameter("dogsize")) && !isNullOrEmpty(dogName)) {
 				DogSize selectedDogSize = convert(request.getParameter("dogsize"));
 				kennel.bookPen(selectedDogSize, dogName);
 				request.setAttribute("report", getReadableReport());
@@ -43,9 +45,10 @@ public class IndexServlet extends HttpServlet {
 			}
 		}
 
-		String checkoutDogName = request.getParameter("checkoutdogname");
-		if (checkoutDogName != null) {
-			if (!checkoutDogName.isEmpty()) {
+		// Check out a dog if the check out button is clicked
+		if (!isNullOrEmpty(request.getParameter("checkout"))) {
+			String checkoutDogName = request.getParameter("checkoutdogname");
+			if (!isNullOrEmpty(checkoutDogName)) {
 				boolean checkedOut = kennel.checkout(checkoutDogName);
 
 				if (checkedOut) {
@@ -84,7 +87,7 @@ public class IndexServlet extends HttpServlet {
 				indicator = "not ";
 			}
 
-			String size = "";
+			String size;
 			if (p.getPenNumber() >= 1 && p.getPenNumber() <= 3) {
 				size = "small";
 			} else if (p.getPenNumber() > 3 && p.getPenNumber() <= 6) {
@@ -92,9 +95,19 @@ public class IndexServlet extends HttpServlet {
 			} else {
 				size = "giant";
 			}
-			
+
 			report += "Pen " + p.getPenNumber() + " is " + indicator + "vacant and has room for " + p.getCapacity() + " x " + size + " dog.<br>";
 		}
 		return report;
+	}
+
+	/**
+	 * This method returns true if the given string is neither null nor empty.
+	 *
+	 * @param s A given string
+	 * @return true if the given string is neither null nor empty
+	 */
+	private boolean isNullOrEmpty(String s) {
+		return s == null || s.isEmpty();
 	}
 }

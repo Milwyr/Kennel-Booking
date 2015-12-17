@@ -83,7 +83,7 @@
 							<addClasspath>true</addClasspath>
 							<useUniqueVersions>false</useUniqueVersions>
 							<classpathPrefix>lib/</classpathPrefix>
-							<!--mainClass>uk.ac.ncl.csc3422.main.AbstractMain</mainClass -->
+							<mainClass>server.KennelWebServer</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
